@@ -1,6 +1,8 @@
 import pg from 'pg';
 
 const db = new pg.Client({
+    connectionString: process.env.DATABASE_URL, // Railway injects this
+    ssl: { rejectUnauthorized: false }, // Required for Railway PostgreSQL
     host: "localhost",
     database: "relateplus",
     user: "postgres",
