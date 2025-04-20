@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 4123;
 // middleware
 // Allow requests from your Netlify frontend
 const allowedOrigins = [
-  "https://your-netlify-app.netlify.app", // Replace with your Netlify URL
+  "https://relateplus.netlify.app", // Replace with your Netlify URL
   "http://localhost:5173", // For local testing
 ];
 

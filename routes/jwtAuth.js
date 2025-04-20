@@ -4,15 +4,17 @@ import db from "../db.js";
 import jwtGenerator from "../utils/jwtGenerator.js";
 import validInfo from "../middleware/validInfo.js";
 import authorization from "../middleware/authorization.js";
+import colorGenerator from "../utils/colorGenerator.js";
 
 const router = express.Router();
 
 // registering
 router.post("/register", validInfo, async (req, res) => {
+  console.log(req.body)
   try {
     // 1. destructure the req.body (name, email, password)
-
     const { name, email, password } = req.body;
+    const color = colorGenerator()
     
     // 2. check if user exist (if user exist then throw error)
 
@@ -34,13 +36,14 @@ router.post("/register", validInfo, async (req, res) => {
     // 4. enter new user inside our database
 
     const newUser = await db.query(
-      "INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *",
-      [name, email, bcryptPassword]
+      "INSERT INTO users (user_name, user_email, user_password, user_color) VALUES ($1, $2, $3, $4) RETURNING *",
+      [name, email, bcryptPassword, color]
     );
 
     // 5. generating our jwt token
     const token = jwtGenerator(newUser.rows[0].user_id);
     res.json(token);
+    console.log(newUser.rows[0])
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
