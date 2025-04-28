@@ -34,7 +34,6 @@ router.post("/register", validInfo, async (req, res) => {
     const bcryptPassword = await bcrypt.hash(password, salt);
 
     // 4. enter new user inside our database
-
     const newUser = await db.query(
       "INSERT INTO users (user_name, user_email, user_password, user_permission, user_color) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [name, email, bcryptPassword, permision, color]
