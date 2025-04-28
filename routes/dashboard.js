@@ -18,7 +18,7 @@ router.get("/", authorization, async (req, res) => {
   }
 });
 
-// GET  users clients/contactss list
+// GET list of all users clients/contact
 
 router.get("/customers", authorization, async (req, res) => {
   const client = await db.query(
@@ -118,7 +118,20 @@ router.patch("/customers/:id", authorization, async (req, res) => {
   STAFF PAGE START BELOW
 */
 
+// GET list of all user's staffs
 
+router.get("/staffs", authorization, async (req, res) => {
+  const staffList = await db.query(
+    "SELECT  staffs.staff_id, staffs.staff_name, staffs.staff_email, staffs.staff_number, staffs.employed_date, staffs.staff_role, staffs.staff_color, staffs.staff_note  FROM staffs JOIN users ON users.user_id=staffs.user_id WHERE staffs.user_id =$1 ORDER BY staffs.staff_name ASC",
+    [req.user]
+  );
+  res.status(200).json(staffList.rows);
+  try {
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json(error);
+  }
+});
 
 // POST new users STAFF contact
 router.post("/staffs", authorization, async (req, res) => {
