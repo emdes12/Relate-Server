@@ -13,7 +13,7 @@ VALUES ('tester1', 'tester1@gmail.com', 'tester1');
 
 -- altering table to add a new column
 ALTER TABLE users 
-ADD user_color VARCHAR(15) -- `{NOT NULL}` can't be added cause there are data in the table alrady
+ADD user_color VARCHAR(15); -- `{NOT NULL}` can't be added cause there are data in the table alrady
 
 
 -- create customers
@@ -115,3 +115,37 @@ from clients
 join users
 on users.user_id=clients.user_id
 where clients.user_id = ('$1');
+
+
+-- delete a row(data) from table
+DELETE FROM clients WHERE user.id = $1;
+
+-- Update client details from clients table
+UPDATE clients SET client_name=$2, client_number=$3, client_email=$4, client_label=$5, client_location=$6, client_birthday=$7, client_note=$8 WHERE client_id=$1 AND user_id=$9;
+
+
+-- create a new services TABLE
+CREATE TABLE staffs (
+    staff_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    staff_name VARCHAR(255) NOT NULL,
+    staff_email VARCHAR(255) NOT NULL,
+    staff_number VARCHAR(255),
+    staff_birthday VARCHAR(255),
+    staff_note VARCHAR(255),
+    employed_date VARCHAR(100) NOT NULL,
+    staff_color VARCHAR(255) NOT NULL,
+    staff_role VARCHAR(255) NOT NULL,
+    user_id      uuid,
+    CONSTRAINT fk_staffs_user_id  -- Explicit name
+        FOREIGN KEY (user_id) 
+        REFERENCES users (user_id),
+    -- Individual uniqueness per user
+    CONSTRAINT unique_staff_email_per_user 
+        UNIQUE (staff_email, user_id),
+    CONSTRAINT unique_staff_number_per_user 
+        UNIQUE (staff_number, user_id)
+);
+
+-- create a staff
+INSERT INTO staffs (staff_name, staff_email, staff_number, staff_birthday, employed_date, staff_color, staff_role, staff_note, user_id)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);

@@ -13,7 +13,7 @@ router.post("/register", validInfo, async (req, res) => {
   console.log(req.body)
   try {
     // 1. destructure the req.body (name, email, password)
-    const { name, email, password } = req.body;
+    const { name, email, password, permision } = req.body;
     const color = colorGenerator()
     
     // 2. check if user exist (if user exist then throw error)
@@ -36,8 +36,8 @@ router.post("/register", validInfo, async (req, res) => {
     // 4. enter new user inside our database
 
     const newUser = await db.query(
-      "INSERT INTO users (user_name, user_email, user_password, user_color) VALUES ($1, $2, $3, $4) RETURNING *",
-      [name, email, bcryptPassword, color]
+      "INSERT INTO users (user_name, user_email, user_password, user_permission, user_color) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [name, email, bcryptPassword, permision, color]
     );
 
     // 5. generating our jwt token
