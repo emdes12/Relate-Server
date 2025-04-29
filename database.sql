@@ -149,3 +149,21 @@ CREATE TABLE staffs (
 -- create a staff
 INSERT INTO staffs (staff_name, staff_email, staff_number, staff_birthday, employed_date, staff_color, staff_role, staff_note, user_id)
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
+
+
+
+
+
+
+-- create chats messageupload table
+CREATE TABLE uploaded_files (
+  id SERIAL PRIMARY KEY,
+  chat_type VARCHAR(255) NOT NULL,
+  chat_message VARCHAR(10000000),
+  original_name VARCHAR(255),
+  storage_name VARCHAR(255),
+  file_path VARCHAR(255),
+  file_type VARCHAR(100),
+  file_size INTEGER,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
