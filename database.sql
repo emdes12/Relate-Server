@@ -12,8 +12,7 @@ INSERT INTO users (user_name, user_email, user_password)
 VALUES ('tester1', 'tester1@gmail.com', 'tester1');
 
 -- altering table to add a new column
-ALTER TABLE users 
-ADD user_color VARCHAR(15); -- `{NOT NULL}` can't be added cause there are data in the table alrady
+ALTER TABLE users ADD user_color VARCHAR(15); -- `{NOT NULL}` can't be added cause there are data in the table alrady
 
 
 -- create customers
@@ -156,14 +155,19 @@ VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
 
 
 -- create chats messageupload table
-CREATE TABLE uploaded_files (
-  id SERIAL PRIMARY KEY,
+CREATE TABLE chats (
+  chat_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   chat_type VARCHAR(255) NOT NULL,
+  sender_name VARCHAR(255) NOT NULL,
   chat_message VARCHAR(10000000),
   original_name VARCHAR(255),
   storage_name VARCHAR(255),
   file_path VARCHAR(255),
   file_type VARCHAR(100),
   file_size INTEGER,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  user_id      uuid,
+  CONSTRAINT fk_chats_center_id 
+    FOREIGN KEY (user_id) 
+    REFERENCES users (user_id)
 );

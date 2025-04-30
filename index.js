@@ -4,6 +4,7 @@ import cors from "cors";
 import db from "./db.js";
 import router from "./routes/jwtAuth.js";
 import dashboard from "./routes/dashboard.js";
+import chat from "./routes/chat.js"
 
 const app = express();
 const PORT = process.env.PORT || 4123;
@@ -32,6 +33,9 @@ app.use("/auth", router);
 
 // dashboard route
 app.use("/dashboard", dashboard);
+
+// chat route
+app.use("/chats", chat);
 
 app.get("/", (req, res) => {
   res.status(200).json({

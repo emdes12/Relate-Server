@@ -121,9 +121,18 @@ router.patch("/customers/:id", authorization, async (req, res) => {
 // GET list of all user's staffs
 
 router.get("/staffs", authorization, async (req, res) => {
+  let userID = ""
+  const user = await db.query("SELECT user_id, user_email, user_permission FROM users WHERE user_id = $1", [req.user])
+  if (user.rows[0].user_permission !== 'admin') {
+    const permit = user.rows[0].user_email
+    const staff_boss = await db.query("SELECT user_id, staff_name FROM staffs WHERE staff_email = $1", [permit])
+    userID = staff_boss.rows[0].user_id
+  } else {
+    userID = user.rows[0].user_id
+  }
   const staffList = await db.query(
     "SELECT  staffs.staff_id, staffs.staff_name, staffs.staff_email, staffs.staff_number, staffs.employed_date, staffs.staff_role, staffs.staff_color, staffs.staff_note  FROM staffs JOIN users ON users.user_id=staffs.user_id WHERE staffs.user_id =$1 ORDER BY staffs.staff_name ASC",
-    [req.user]
+    [userID]
   );
   res.status(200).json(staffList.rows);
   try {
