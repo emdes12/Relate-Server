@@ -1,0 +1,19 @@
+Before migrating your local DB note the below
+
+1. run pg dump
+    pg_dump -U postgres -h localhost -d relateplus -F c -f updated_dump.dump
+
+2. enter your postrgesql password
+
+3. run pg restore to forward to railway
+    pg_restore -U postgres -h yamabiko.proxy.rlwy.net -p 15233 -d railway --no-owner updated_dump.dump
+
+--clean was removed from the above because, It first clear all tables and records in railway db before restoring the dumped file.
+
+4. enter your railway db password which is MezvhpgszvZSbfGXUIaxTvmMuSItqaaR
+
+
+
+
+
+GOOD LUCK
