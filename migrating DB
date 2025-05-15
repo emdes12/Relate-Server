@@ -1,5 +1,8 @@
 Before migrating your local DB note the below
 
+first open cmd or powershell make sure you run as administration
+then cd to 'C:\Program Files\PostgreSQL\15\bin'
+
 1. backup railway db first
     pg_dump -U postgres -h yamabiko.proxy.rlwy.net -d railway -F c -f railway_backup.dump
 

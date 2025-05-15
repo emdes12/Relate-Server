@@ -5,6 +5,7 @@ import db from "./db.js";
 import router from "./routes/jwtAuth.js";
 import dashboard from "./routes/dashboard.js";
 import chat from "./routes/chat.js"
+import forms from "./routes/forms.js"
 
 const app = express();
 const PORT = process.env.PORT || 4123;
@@ -36,6 +37,9 @@ app.use("/dashboard", dashboard);
 
 // chat route
 app.use("/chats", chat);
+
+// chat route
+app.use("/forms", forms);
 
 app.get("/", (req, res) => {
   res.status(200).json({

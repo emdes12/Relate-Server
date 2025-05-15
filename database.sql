@@ -171,3 +171,44 @@ CREATE TABLE chats (
     FOREIGN KEY (user_id) 
     REFERENCES users (user_id)
 );
+
+
+
+
+-- FORM TABLES HANDLER
+
+-- form table creation
+CREATE TABLE forms (
+  form_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(user_id),
+  title VARCHAR(225),
+  description VARCHAR(1000000),
+  color VARCHAR(225),
+  submit_text VARCHAR(225),
+  closing_date VARCHAR(225),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- form input fields
+CREATE TABLE form_fields (
+  field_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  form_id UUID REFERENCES forms(form_id) ON DELETE CASCADE,
+  label TEXT,
+  field_type TEXT, -- e.g., text, textarea, email, number, date, checkbox, select
+  is_required BOOLEAN DEFAULT false,
+  options TEXT[], -- for select, checkbox
+  position INTEGER
+);
+
+-- form responses
+CREATE TABLE form_responses (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  form_id UUID REFERENCES forms(form_id) ON DELETE CASCADE,
+  submitted_at TIMESTAMP DEFAULT NOW(),
+  response JSONB -- contains field id to value map
+);
+
+
+-- adding COMPLETEING MESSAGE column to forms table
+ALTER TABLE forms ADD completion_message VARCHAR(255);
+ALTER TABLE forms ADD completed BOOLEAN DEFAULT false;
