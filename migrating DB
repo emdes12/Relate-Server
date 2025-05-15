@@ -19,7 +19,43 @@ then cd to 'C:\Program Files\PostgreSQL\15\bin'
 5. enter your railway db password which is MezvhpgszvZSbfGXUIaxTvmMuSItqaaR
 
 
+# the up one was not successful, am trying this
+2. run schema only
+    pg_dump -U postgres -h localhost -d relateplus --schema-only -F c -f schema.dump
 
-
+3. restore to railaway
+    pg_restore -U postgres -h yamabiko.proxy.rlwy.net -p 15233 -d railway --no-owner --schema-only schema.dump
 
 GOOD LUCK
+
+
+# going to this now as above don't work
+Step-by-Step Solution
+1. First, Backup Your Railway DB (Critical!)
+bash
+    pg_dump -U postgres -h yamabiko.proxy.rlwy.net -p 15233 -d railway -F c -f railway_backup.dump
+2. Dump Only New Tables from Local
+bash
+    pg_dump -U postgres -h localhost -d relateplus --table=forms --table=form_fields --table=form_responses -F c -f new_tables.dump
+3. Dump Only New Columns (Schema Changes)
+bash
+pg_dump -U postgres -h localhost -d relateplus \
+  --schema-only \  # No data
+  --table=forms --table=form_field \  # Altered tables
+  -F c -f schema_changes.dump
+4. Dump New Data for Existing Tables
+bash
+pg_dump -U postgres -h localhost -d relateplus \
+  --data-only \
+  --table=existing_table_1 --table=existing_table_2 \  # Tables with new rows
+  -F c -f new_data.dump
+5. Restore to Railway
+bash
+# Apply new tables
+pg_restore -U postgres -h yamabiko.proxy.rlwy.net -p 15233 -d railway --no-owner new_tables.dump
+
+# Apply schema changes (new columns)
+pg_restore -U postgres -h yamabiko.proxy.rlwy.net -p 15233 -d railway --no-owner --schema-only schema_changes.dump
+
+# Add new data
+pg_restore -U postgres -h yamabiko.proxy.rlwy.net -p 15233 -d railway --no-owner --data-only new_data.dump
