@@ -1,4 +1,5 @@
 import pg from "pg";
+import { Pool } from "pg";
 
 /*
     Depending you need, comment out appropriately
