@@ -8,10 +8,10 @@ import pg from "pg";
 
 // Number 1
 
-const db = new pg.Client({
-connectionString: process.env.DATABASE_URL, // Railway injects this
-ssl: { rejectUnauthorized: false }, // Required for Railway PostgreSQL
-});
+// const db = new pg.Client({
+// connectionString: process.env.DATABASE_URL, // Railway injects this
+// ssl: { rejectUnauthorized: false }, // Required for Railway PostgreSQL
+// });
 
 // Nimber 2
 
@@ -22,5 +22,11 @@ ssl: { rejectUnauthorized: false }, // Required for Railway PostgreSQL
 //   port: 5432,
 //   password: "EmDes12@",
 // });
+
+// Number 3 - for Pool
+const db = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }, // Important for Railway
+});
 
 export default db; // Changed from module.exports to export default
