@@ -1,5 +1,6 @@
 import pg from "pg";
-import { Pool } from "pg";
+import pkg from 'pg';
+const { Pool } = pkg;
 
 /*
     Depending you need, comment out appropriately
