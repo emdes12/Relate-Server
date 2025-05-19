@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 // import env from 'dotenv';
-import db from "./db.js";
+// import db from "./db.js";
 import router from "./routes/jwtAuth.js";
 import dashboard from "./routes/dashboard.js";
 import chat from "./routes/chat.js"
@@ -25,7 +25,6 @@ app.use(
 );
 app.use(express.json());
 
-db.connect();
 
 // ROUTE
 
