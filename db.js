@@ -30,13 +30,18 @@ const { Pool } = pkg;
 // export default db; // Changed from module.exports to export default
 
 // Number 3 - for Pool
-const pool = new Pool({
+const db = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
   idleTimeoutMillis: 30000,   // 30 seconds
   connectionTimeoutMillis: 2000, // 2 seconds
 });
 
+db.on('error', (err) => {
+  console.error('Unexpected error on idle client', err);
+  process.exit(-1);
+});
+
 // export const query = (text, params) => pool.query(text, params);
 
-export default pool; 
+export default db; 
