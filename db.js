@@ -15,6 +15,8 @@ const { Pool } = pkg;
 // ssl: { rejectUnauthorized: false }, // Required for Railway PostgreSQL
 // });
 
+// export default db; // Changed from module.exports to export default
+
 // Nimber 2
 
 // const db = new pg.Client({
@@ -25,10 +27,16 @@ const { Pool } = pkg;
 //   password: "EmDes12@",
 // });
 
+// export default db; // Changed from module.exports to export default
+
 // Number 3 - for Pool
-const db = new Pool({
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }, // Important for Railway
+  ssl: { rejectUnauthorized: false },
+  idleTimeoutMillis: 30000,   // 30 seconds
+  connectionTimeoutMillis: 2000, // 2 seconds
 });
 
-export default db; // Changed from module.exports to export default
+// export const query = (text, params) => pool.query(text, params);
+
+export default pool; 
