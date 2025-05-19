@@ -32,7 +32,7 @@ const { Pool } = pkg;
 // Number 3 - for Pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
   idleTimeoutMillis: 30000,   // 30 seconds
   connectionTimeoutMillis: 2000, // 2 seconds
 });
