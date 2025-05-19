@@ -25,6 +25,7 @@ app.use(
 );
 app.use(express.json());
 
+// db.connect();
 
 // ROUTE
 
